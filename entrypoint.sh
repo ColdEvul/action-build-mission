@@ -22,8 +22,8 @@ if [ -z "$VERSION_TAG" ]; then
 fi
 
 if [ ! -d "$RELEASE_DIR" ]; then
-	echo "Release directory not found"
-	exit 2
+	echo "Release directory not found, creating"
+	mkdir -p $RELEASE_DIR
 fi
 
 echo "Generating Missions"
