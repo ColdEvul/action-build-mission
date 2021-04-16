@@ -85,7 +85,6 @@ def main():
             shutil.copytree(common_mission_files, assembly_path, dirs_exist_ok=True)
             shutil.copytree(mission, assembly_path, dirs_exist_ok=True)
 
-            mkDirectory("tmp")
             subprocess.call('armake build "{}" "{}.pbo"'.format(assembly_path, os.path.join(outputFolder, new_mission_name)), shell=True)
 
             print("Completed assembly of {}.".format(new_mission_name))
