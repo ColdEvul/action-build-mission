@@ -3,7 +3,6 @@ import sys
 import os
 import argparse
 import shutil
-import stat
 import subprocess
 import tempfile
 import glob
@@ -47,33 +46,6 @@ outputFolder = os.path.join(ProjectRoot, WORK_DIR)
 
 releaseFolder = os.path.join(ProjectRoot, args.release)
 
-## https://stackoverflow.com/a/22331852
-def copytree(src, dst, symlinks = False, ignore = None):
-  if not os.path.exists(dst):
-    os.makedirs(dst)
-    shutil.copystat(src, dst)
-  lst = os.listdir(src)
-  if ignore:
-    excl = ignore(src, lst)
-    lst = [x for x in lst if x not in excl]
-  for item in lst:
-    s = os.path.join(src, item)
-    d = os.path.join(dst, item)
-    if symlinks and os.path.islink(s):
-      if os.path.lexists(d):
-        os.remove(d)
-      os.symlink(os.readlink(s), d)
-      try:
-        st = os.lstat(s)
-        mode = stat.S_IMODE(st.st_mode)
-        os.lchmod(d, mode)
-      except:
-        pass # lchmod not available
-    elif os.path.isdir(s):
-      copytree(s, d, symlinks, ignore)
-    else:
-      shutil.copy2(s, d)
-
 def mkDirectory(path):
     try:
         os.mkdir(path)
@@ -109,10 +81,11 @@ def main():
 
             print("Assembling '{}'...".format(new_mission_name))
 
-            copytree(common_mission_files, assembly_path)
-            copytree(mission, assembly_path)
+            shutil.copytree(common_mission_files, assembly_path)
+            shutil.copytree(mission, assembly_path)
 
-            subprocess.call('armake2 build "{}" "{}.pbo"'.format(assembly_path, os.path.join(outputFolder, new_mission_name)), shell=True)
+            mkDirectory("tmp")
+            subprocess.call('armake build "{}" "{}.pbo"'.format(assembly_path, os.path.join(outputFolder, new_mission_name)), shell=True)
 
             print("Completed assembly of {}.".format(new_mission_name))
 
