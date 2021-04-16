@@ -9,8 +9,6 @@ MISSIONS_DIR=$GITHUB_WORKSPACE/$1
 VERSION_TAG=$2
 RELEASE_DIR=$GITHUB_WORKSPACE/$3
 
-echo "gh workspace: $GITHUB_WORKSPACE"
-
 if [ ! -d "$MISSIONS_DIR" ]; then
 	echo "Missions directory not found"
 	exit 2
