@@ -7,6 +7,8 @@ import subprocess
 import tempfile
 import glob
 
+from pathlib import Path
+
 __version__ = 1.0
 
 WORK_DIR = 'tmp' 
@@ -16,10 +18,6 @@ scriptRoot  = os.path.dirname(scriptPath)
 ProjectRoot = os.path.dirname(os.path.dirname(scriptPath))
 os.chdir(ProjectRoot)
 
-
-
-os.mkdir(WORK_DIR) 
-outputFolder = os.path.join(ProjectRoot, WORK_DIR)
 
 parser = argparse.ArgumentParser(
     prog='make',
@@ -34,6 +32,9 @@ parser.add_argument('--release',
     help="Store generated release missions in this dir"
 )
 args = parser.parse_args()
+
+Path(WORK_DIR).mkdir(parents=True, exist_ok=True)
+outputFolder = os.path.join(ProjectRoot, WORK_DIR)
 
 releaseFolder = os.path.join(ProjectRoot, args.release)
 
