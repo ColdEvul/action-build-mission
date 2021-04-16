@@ -100,7 +100,7 @@ def main():
 if __name__ == "__main__":
     sys.exit(main())
 
-## https://stackoverflow.com/a/19643710
+## https://stackoverflow.com/a/19643710 (with some changes for python 3)
 def copytree(src, dst, symlinks=False, ignore=None):
     """Recursively copy a directory tree using copy2().
 
