@@ -30,6 +30,7 @@ parser.add_argument('--version',
     help="Add a additional tag to a to the build"
 )
 parser.add_argument('--release',
+    default='release',
     help="Store generated release missions in this dir"
 )
 args = parser.parse_args()
