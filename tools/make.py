@@ -81,8 +81,8 @@ def main():
 
             print("Assembling '{}'...".format(new_mission_name))
 
-            shutil.copytree(common_mission_files, assembly_path)
-            shutil.copytree(mission, assembly_path)
+            distutils.dir_util.copy_tree(common_mission_files, assembly_path)
+            distutils.dir_util.copy_tree(mission, assembly_path)
 
             mkDirectory("tmp")
             subprocess.call('armake build "{}" "{}.pbo"'.format(assembly_path, os.path.join(outputFolder, new_mission_name)), shell=True)
