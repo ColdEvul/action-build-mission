@@ -1,0 +1,25 @@
+name: '7Cav - Arma 3 mission packaging'
+description: 'Generate pbo binaries from sqm mission files, using armake2'
+
+inputs:
+
+  missions-dir:
+    description: 'Path to directory containing subsequent directories that have a mission.sqm'
+    required: true
+
+  version-tag:
+    description: 'Version to tag missions with'
+    required: true
+
+  release-dir:
+    description: 'Path to directory that compiled missions will be stored in'
+    required: false
+    default: 'release'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.missions-dir }}
+    - ${{ inputs.version-tag }}
+    - ${{ inputs.release-dir }}
