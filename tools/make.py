@@ -100,6 +100,7 @@ def main():
 if __name__ == "__main__":
     sys.exit(main())
 
+## https://stackoverflow.com/a/19643710
 def copytree(src, dst, symlinks=False, ignore=None):
     """Recursively copy a directory tree using copy2().
 
@@ -136,7 +137,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
             else:
                 shutil.copy2(srcname, dstname)
             # XXX What about devices, sockets etc.?
-        except (IOError, os.error), why:
+        except (IOError, os.error) why:
             errors.append((srcname, dstname, str(why)))
         # catch the Error from the recursive copytree so that we can
         # continue with other files
