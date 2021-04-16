@@ -7,7 +7,6 @@ import subprocess
 import tempfile
 import glob
 
-from distutils.dir_util import copy_tree
 from pathlib import Path
 
 __version__ = 1.0
@@ -47,54 +46,14 @@ outputFolder = os.path.join(ProjectRoot, WORK_DIR)
 
 releaseFolder = os.path.join(ProjectRoot, args.release)
 
-## https://stackoverflow.com/a/19643710 (with some changes for python 3)
-def copytree(src, dst, symlinks=False):
-    """Recursively copy a directory tree using copy2().
-
-    The destination directory must not already exist.
-    If exception(s) occur, an Error is raised with a list of reasons.
-
-    If the optional symlinks flag is true, symbolic links in the
-    source tree result in symbolic links in the destination tree; if
-    it is false, the contents of the files pointed to by symbolic
-    links are copied.
-
-    XXX Consider this example code rather than the ultimate tool.
-
-    """
-    names = os.listdir(src)
-    if ignore is not None:
-        ignored_names = ignore(src, names)
-    else:
-        ignored_names = set()
-
-    _mkdir(dst) # XXX
-    errors = []
-    for name in names:
-        if name in ignored_names:
-            continue
-        srcname = os.path.join(src, name)
-        dstname = os.path.join(dst, name)
-        try:
-            if symlinks and os.path.islink(srcname):
-                linkto = os.readlink(srcname)
-                os.symlink(linkto, dstname)
-            elif os.path.isdir(srcname):
-                copytree(srcname, dstname, symlinks, ignore)
-            else:
-                shutil.copy2(srcname, dstname)
-            # XXX What about devices, sockets etc.?
-        except (IOError, os.error):
-            errors.append((srcname, dstname, str(why)))
-        # catch the Error from the recursive copytree so that we can
-        # continue with other files
-        except (shutil.Error, err):
-            errors.extend(err.args[0])
-    try:
-        shutil.copystat(src, dst)
-    except WindowsError:
-        # can't copy file access times on Windows
-        pass
+def copytree(src, dst, symlinks=False, ignore=None):
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            shutil.copytree(s, d, symlinks, ignore)
+        else:
+            shutil.copy2(s, d)
 
 
 def mkDirectory(path):
@@ -132,8 +91,8 @@ def main():
 
             print("Assembling '{}'...".format(new_mission_name))
 
-            copytree(common_mission_files, assembly_path, dirs_exist_ok=True)
-            copytree(mission, assembly_path, dirs_exist_ok=True)
+            copytree(common_mission_files, assembly_path)
+            copytree(mission, assembly_path)
 
             subprocess.call('armake2 build "{}" "{}.pbo"'.format(assembly_path, os.path.join(outputFolder, new_mission_name)), shell=True)
 
@@ -148,4 +107,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-
