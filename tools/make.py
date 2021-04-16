@@ -3,11 +3,11 @@ import sys
 import os
 import argparse
 import shutil
+import stat
 import subprocess
 import tempfile
 import glob
 
-from distutils.dir_util import copy_tree
 from pathlib import Path
 
 __version__ = 1.0
@@ -47,15 +47,31 @@ outputFolder = os.path.join(ProjectRoot, WORK_DIR)
 
 releaseFolder = os.path.join(ProjectRoot, args.release)
 
-def copytree(src, dst, symlinks=False, ignore=None):
-    for item in os.listdir(src):
-        s = os.path.join(src, item)
-        d = os.path.join(dst, item)
-        if os.path.isdir(s):
-            shutil.copytree(s, d, symlinks, ignore)
-        else:
-            shutil.copy2(s, d)
-
+def copytree(src, dst, symlinks = False, ignore = None):
+  if not os.path.exists(dst):
+    os.makedirs(dst)
+    shutil.copystat(src, dst)
+  lst = os.listdir(src)
+  if ignore:
+    excl = ignore(src, lst)
+    lst = [x for x in lst if x not in excl]
+  for item in lst:
+    s = os.path.join(src, item)
+    d = os.path.join(dst, item)
+    if symlinks and os.path.islink(s):
+      if os.path.lexists(d):
+        os.remove(d)
+      os.symlink(os.readlink(s), d)
+      try:
+        st = os.lstat(s)
+        mode = stat.S_IMODE(st.st_mode)
+        os.lchmod(d, mode)
+      except:
+        pass # lchmod not available
+    elif os.path.isdir(s):
+      copytree(s, d, symlinks, ignore)
+    else:
+      shutil.copy2(s, d)
 
 def mkDirectory(path):
     try:
