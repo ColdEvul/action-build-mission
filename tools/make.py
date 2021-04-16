@@ -35,6 +35,10 @@ parser.add_argument('--missions',
     default='Maps',
     help="Compile missions from this dir"
 )
+parser.add_argument('--common',
+    default='CommonBase',
+    help="common sqf"
+)
 args = parser.parse_args()
 
 Path(WORK_DIR).mkdir(parents=True, exist_ok=True)
@@ -74,7 +78,7 @@ def main():
             new_mission_name = mission_name.replace('DEVBUILD', args.version)
 
             assembly_path = os.path.join(tmpFolder, new_mission_name)
-            common_mission_files = os.path.join(os.path.join(ProjectRoot, 'CommonBase'))
+            common_mission_files = os.path.join(os.path.join(ProjectRoot, args.common))
 
             print("Assembling '{}'...".format(new_mission_name))
 
