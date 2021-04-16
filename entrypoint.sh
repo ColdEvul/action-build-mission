@@ -25,4 +25,4 @@ if [ ! -d "$RELEASE_DIR" ]; then
 fi
 
 echo "Generating Missions"
-python3 tools/make.py --version $VERSION_TAG --release $RELEASE_DIR
+python3 /tools/make.py --version $VERSION_TAG --release $RELEASE_DIR

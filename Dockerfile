@@ -7,6 +7,7 @@ RUN python3 -m ensurepip
 RUN pip3 install --no-cache --upgrade pip setuptools
 
 COPY ./entrypoint.sh /entrypoint.sh
+COPY tools /tools
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
