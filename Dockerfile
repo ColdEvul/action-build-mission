@@ -2,7 +2,7 @@ FROM arwynfr/armake2:alpine as base
 
 FROM alpine:3
 
-COPY --from=base /usr/bin/armake2 /usr/bin/armake2
+COPY --from=base /usr/bin/armake2 /usr/bin/armake
 
 # Install python/pip
 ENV PYTHONUNBUFFERED=1
