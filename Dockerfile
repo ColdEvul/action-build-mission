@@ -2,6 +2,8 @@ FROM arwynfr/armake2:alpine as base
 
 FROM alpine:3
 
+RUN apk add --no-cache libressl=2.7.5-r0
+
 COPY --from=base /usr/bin/armake2 /usr/bin/armake2
 
 # Install python/pip
