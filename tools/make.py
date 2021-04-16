@@ -7,6 +7,7 @@ import subprocess
 import tempfile
 import glob
 
+from distutils.dir_util import copy_tree
 from pathlib import Path
 
 __version__ = 1.0
@@ -91,8 +92,8 @@ def main():
 
             print("Assembling '{}'...".format(new_mission_name))
 
-            copytree(common_mission_files, assembly_path)
-            copytree(mission, assembly_path)
+            copy_tree(common_mission_files, assembly_path)
+            copy_tree(mission, assembly_path)
 
             subprocess.call('armake2 build "{}" "{}.pbo"'.format(assembly_path, os.path.join(outputFolder, new_mission_name)), shell=True)
 
