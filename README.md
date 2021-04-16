@@ -32,7 +32,7 @@ Will default to $GITHUB_WORKSPACE/release
 ## Usage
 
 ```yml
-uses: 7cav/action-build-mission
+uses: 7Cav/action-build-mission@develop
 with:
   missions-dir: path/to/maps/dir
   version-tag: 0.0.1
