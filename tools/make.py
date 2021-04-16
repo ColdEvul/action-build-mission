@@ -137,11 +137,11 @@ def copytree(src, dst, symlinks=False, ignore=None):
             else:
                 shutil.copy2(srcname, dstname)
             # XXX What about devices, sockets etc.?
-        except (IOError, os.error) why:
+        except (IOError, os.error):
             errors.append((srcname, dstname, str(why)))
         # catch the Error from the recursive copytree so that we can
         # continue with other files
-        except shutil.Error, err:
+        except (shutil.Error, err):
             errors.extend(err.args[0])
     try:
         shutil.copystat(src, dst)
