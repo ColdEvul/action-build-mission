@@ -2,7 +2,8 @@ FROM arwynfr/armake2:alpine as base
 
 FROM alpine:3
 
-RUN apk add --no-cache libressl
+RUN apk add --no-cache libressl && \
+	apk add --no-cache libgcc
 
 COPY --from=base /usr/bin/armake2 /usr/bin/armake2
 
