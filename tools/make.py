@@ -11,7 +11,7 @@ from pathlib import Path
 
 __version__ = 1.0
 
-WORK_DIR = 'tmp' 
+WORK_DIR = 'tmp'
 
 scriptPath  = os.path.realpath(__file__)
 scriptRoot  = os.path.dirname(scriptPath)
@@ -30,6 +30,10 @@ parser.add_argument('--version',
 parser.add_argument('--release',
     default='release',
     help="Store generated release missions in this dir"
+)
+parser.add_argument('--missions',
+    default='Maps',
+    help="Compile missions from this dir"
 )
 args = parser.parse_args()
 
@@ -64,7 +68,7 @@ def main():
     global tmpFolder
     tmpFolder = tempfile.mkdtemp()
 
-    for mission_files in glob.glob(os.path.join(ProjectRoot, 'Maps', '*')):
+    for mission_files in glob.glob(os.path.join(ProjectRoot, args.missions, '*')):
         for mission in glob.glob(mission_files):
             mission_name = os.path.basename(mission)
             new_mission_name = mission_name.replace('DEVBUILD', args.version)
