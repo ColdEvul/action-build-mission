@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import tempfile
 import glob
+import distutils
 
 from pathlib import Path
 
