@@ -3,6 +3,7 @@ FROM arwynfr/armake2:alpine as base
 RUN apk add --no-cache python3
 RUN ln -sf python3 /usr/bin/python
 
+RUN apk add py3-setuptools
 
 # Install python/pip
 ENV PYTHONUNBUFFERED=1
